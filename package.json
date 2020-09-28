@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "scripts": {
-    "start": "node index.ts"
+    "start": "node index.js"
   },
   "dependencies": {
     "@types/node": "^14.11.2",

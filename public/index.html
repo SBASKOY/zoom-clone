@@ -29,7 +29,7 @@
     var socket = io();
     $('form').submit(()=>{
         socket.emit("sendmessage",$('#m').val());
-        $('#m').val();
+        $('#m').val('');
         return false;
     });
     socket.on('sendmessage', function(msg){

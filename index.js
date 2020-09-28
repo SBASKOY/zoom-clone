@@ -1,65 +1,44 @@
 
-var app=require("express")();
-var http=require("http").createServer(app);
-var io=require("socket.io")(http); 
+var app = require("express")();
+var http = require("http").createServer(app);
+var io = require("socket.io")(http);
 
 
-let onlineUser=[];
+let socketsArray = [];
 
-app.get("/",(req,res)=>{
-    res.sendFile(__dirname+"/public/index.html")
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html")
 })
- 
-io.on("connection", socket => {
-  const existingSocket = this.activeSockets.find(
-    existingSocket => existingSocket === socket.id
-  );
 
-  if (!existingSocket) {
-    activeSockets.push(socket.id);
+io.on('connection', (socket) => {
 
-    socket.emit("update-user-list", {
-      users: activeSockets.filter(
-        existingSocket => existingSocket !== socket.id
-      )
-    });
+  socket.broadcast.emit('add-users', {
+    users: [socket.id]
+  });
 
-    socket.broadcast.emit("update-user-list", {
-      users: [socket.id]
-    });
-  }
+  socket.on('disconnect', () => {
+    socketsArray.splice(socketsArray.indexOf(socket.id), 1);
+    io.emit('remove-user', socket.id);
+  });
 
-  socket.on("call-user", (data) => {
-    socket.to(data.to).emit("call-made", {
+  socket.on('make-offer', function (data) {
+    socket.to(data.to).emit('offer-made', {
       offer: data.offer,
       socket: socket.id
     });
   });
-
-  socket.on("make-answer", data => {
-    socket.to(data.to).emit("answer-made", {
+  socket.on('make-answer', function (data) {
+    socket.to(data.to).emit('answer-made', {
       socket: socket.id,
       answer: data.answer
     });
   });
 
-  socket.on("reject-call", data => {
-    socket.to(data.from).emit("call-rejected", {
-      socket: socket.id
-    });
-  });
-
-  socket.on("disconnect", () => {
-    this.activeSockets = this.activeSockets.filter(
-      existingSocket => existingSocket !== socket.id
-    );
-    socket.broadcast.emit("remove-user", {
-      socketId: socket.id
-    });
-  });
 });
 
+
+
 const PORT = process.env.PORT || 3000;
-http.listen(PORT,()=>{
-    console.log("listening 3000 port")
+http.listen(PORT, () => {
+  console.log("listening 3000 port")
 })

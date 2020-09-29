@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anasayfa</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
 
@@ -30,14 +30,10 @@
         </div>
     </div>
     </script>
-    <div id="dialog" title="Create new user" style="display:none;">
-        <input type="text" name="Adınız" id="name" class="text">
+ 
 
-        <input type="text" id="roomId" placeholder="Oda Id">
-        <button id="joinroom"> Katıl</button>
-
-    </div>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script>
@@ -50,15 +46,35 @@
             }
 
         }
-        $("#joinroom").on("click",()=>{
-           var name=$('#name').val();
-           var id=$('#roomId').val();
-           if(name!=""|| name!=null && id!=""||id!=null){
-               location.href="/"+id+"_"+name;
-           }
+        $("#joinroom").on("click", () => {
+            var name = $('#name').val();
+            var id = $('#roomId').val();
+            if (name != "" || name != null && id != "" || id != null) {
+                location.href = "/" + id + "_" + name;
+            }
         })
         function joinRoom() {
-            $("#dialog").dialog()
+            $.alert({
+                title: 'Odaya Katıl!',
+                content: `
+                <div id="dialog">
+                <input type="text" id="roomId" placeholder="Oda id">
+                <input  type="text" id="name" placeholder="Adınız..">
+                    </div>
+                `,
+                buttons: {
+                    heyThere: {
+                        text: 'Katıl!',
+                        action: function () {
+                           var name=$('#name').val();
+                           var roomId=$('#roomId').val();
+                           if(name!=""||name!=null&&roomId!=""||roomId!=null){
+                               location.href="/"+roomId+"_"+name
+                           }
+                        }
+                    }
+                }
+            });
         }
     </script>
 </body>

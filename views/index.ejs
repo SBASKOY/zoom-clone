@@ -80,7 +80,7 @@
                         action: function () {
                            var name=$('#name').val();
                            var roomId=$('#roomId').val();
-                           if(name!=""||name!=null&&roomId!=""||roomId!=null){
+                           if(name!=""&&name!=null&&roomId!=""&&roomId!=null){
                                location.href="/"+roomId+"_"+name
                            }
                         }

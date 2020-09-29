@@ -4,42 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="css/style.css">
+
   <script>
-    const ROOM_ID = "<%= roomId %>"
+    const ROOM_ID = "<%= roomId %>";
+    const NAME = "<%= name %>";
   </script>
+
   <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
   <script src="/socket.io/socket.io.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="script.js" defer></script>
-  <title>Document</title>
+ 
+  <title>Chat Room</title>
   <style>
-    html,body{
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    #video-grid {
-      display: flex;
-      width: 80%;
-      height: 90%;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-evenly;
-      flex-wrap: wrap;
-      background-color: gray;
-      margin-left:auto;
-      margin-right: auto;    
-    }
     
-    video {
-      width: 300px;
-      height: 300px;
-      object-fit: cover;
-    }
   </style>
 </head>
 <body>
-  <div id="video-grid">
+  <div class="container">
+  
+    <div class="chat">
+      <div>
+        <h3 style="margin-left: 10px;">Oda ID</h3>
+        <p id="roomId" style="margin-left: 10px;"></p>
+      </div>
+      <div id="chatpanel" style="overflow-y: auto;height: 75%">
+      
+      </div>
 
+      <form action="">
+        <input placeholder="Mesaj yolla" id="m" autocomplete="off" />
+        <button>Gönder</button>
+      </form>
+    </div>
+    <div id="video-grid">
+
+    </div>
   </div>
+
+  <script>
+     document.getElementById("roomId").innerText=ROOM_ID;
+  </script>
 </body>
 </html>

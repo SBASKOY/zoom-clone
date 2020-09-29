@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const server = require('http').Server(app)
+const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const { v4: uuidV4 } = require('uuid')
 
@@ -25,5 +25,7 @@ io.on('connection', socket => {
     })
   })
 })
-const PORT =process.env.PORT||3000;
-server.listen(3000)
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log("listening 3000 port")
+})

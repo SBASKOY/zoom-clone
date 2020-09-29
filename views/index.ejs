@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -38,12 +38,28 @@
 
     <script>
         function newRoom() {
-            var name = prompt("Adınız", "")
-            if (name == null || name == "") {
-
-            } else {
-                location.href = "/room/" + name;
-            }
+          
+            $.alert({
+                title:"Oda Kur",
+                content: `
+                <div id="dialog">
+                <input type="text" id="yourname" placeholder="Adınız..">
+                    </div>
+                `,
+                closeIcon:true,
+                type:"green",
+                buttons: {
+                    heyThere: {
+                        text: 'Oda Kur!',
+                        action: function () {
+                           var name=$('#yourname').val();
+                           if(name!=""&&name!=null){
+                            location.href = "/room/" + name;
+                           }
+                        }
+                    }
+                }
+            })
 
         }
 

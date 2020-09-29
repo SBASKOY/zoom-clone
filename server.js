@@ -7,7 +7,7 @@ const { v4: uuidV4 } = require('uuid')
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-app.use('/peerjs', require('peerjs').ExpressPeerServer(srv, {
+app.use('/peerjs', require('peer').ExpressPeerServer(srv, {
 	debug: true
 }))
 

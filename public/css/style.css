@@ -3,19 +3,8 @@ html,body{
     padding: 0;
     height: 100%;
   }
-  #video-grid {
-    display: flex;
-    width: 80%;
-    height: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    background-color:gray;
-    margin-left:auto;
-    margin-right: auto;    
-  }
-  video {
+ 
+  .video {
     width: 300px;
     height: 300px;
     object-fit: cover;
@@ -63,9 +52,40 @@ form button{
  padding-top: 5px;
  padding-bottom: 5px;
  margin-top: 5px;
+ word-wrap: break-word;
 }
 .chatdialog p:first-child{
   font-size: 12px;
   width: 100%;
   border-bottom: 1px solid gray;
+}
+.setting{
+  position: fixed;
+  bottom: 0;
+  height: 60px;
+  left: 20%;
+}
+
+.video-grid{
+  display: flex;
+  width: 80%;
+  height: 90%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  background-color:gray;
+  margin-left:auto;
+  margin-right: auto;  
+}
+.video-grid-active{
+  display: flex;
+  flex-direction: column;
+
+}
+.video-active{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
 }

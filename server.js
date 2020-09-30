@@ -39,6 +39,11 @@ io.on('connection', socket => {
     socket.on('chat message', (msg,name) => {
       io.to(roomId).emit("chat message", msg,name);
     });
+
+    socket.on("sharescreen",name=>{
+      io.to(roomId).emit("share screen",userId)
+    })
+
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
     })

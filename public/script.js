@@ -70,6 +70,7 @@ myPeer.on('open', id => {
   document.getElementById("share").addEventListener("click",function(_event){
     navigator.mediaDevices.getDisplayMedia(displayMediaOptions).then((stream)=>{
       startCapture(videoElem,stream);
+      socket.emit("sharescreen",NAME)
       myPeer.on('call', call => {
         call.answer(stream)
         const video = document.createElement('video')
@@ -78,7 +79,9 @@ myPeer.on('open', id => {
         })
     
       })
-
+      socket.on("share screen",userId=>{
+        connectToNewUser(userId,stream)
+      })
     });
   },false)
   socket.emit('join-room', ROOM_ID, id)

@@ -84,8 +84,40 @@ form button{
 
 }
 .video-active{
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 5px;
+}
+.canvas{
+  display: block;
+  width: 90%;
+  height: 500px;
+  background-color: white;
+}
+.toolbar{
+  height: 30px;
+  width: 90%;
+  background-color: gray;
+}
+.toolbar button{
+  width: 25px;
+  height: 25px;
+  border: none;
+  outline: none;
+}
+.video-grid1{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  background-color:gray;
+  margin-left:auto;
+  margin-right: auto;  
+}
+.video-grid1-active{
+  height: auto;
 }

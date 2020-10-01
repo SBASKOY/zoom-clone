@@ -40,8 +40,11 @@ io.on('connection', socket => {
       io.to(roomId).emit("chat message", msg,name);
     });
 
-    socket.on("sharescreen",name=>{
-      io.to(roomId).emit("share screen",userId)
+    socket.on("draw",data=>{
+      io.to(roomId).emit("draw",data)
+    })
+    socket.on("stopCanvas",data=>{
+      io.to(roomId).emit("stopCanvas",data)
     })
 
     socket.on('disconnect', () => {

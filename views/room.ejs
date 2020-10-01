@@ -41,11 +41,22 @@
     </div>
    
       <div id="video-grid" class="video-grid">
-        <video id="shareVide" autoplay style="display: none;"></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <div style="display:none;" id="toolbar">
+            <button id="yellow" style="background-color: yellow;"></button>
+            <button id="red" style="background-color: red;"></button>
+            <button id="blue" style="background-color: blue;"></button>
+            <button id="green" style="background-color: green;"></button>
+            <button id="brown" style="background-color:brown;"></button>
+            <button id="purple" style="background-color: purple;"></button>
+        </div>
+        <div id="video-grid1" class="video-grid1">
+
+        </div>
       </div>
       <div class="setting">
-        <img src="images/share.svg" width="50" height="50" id="share">
-
+        <img src="images/drawing.svg"  width="50" height="50" id="shareCanvas">
+        <img src="images/stop.svg" width="50" style="display: none;" height="50" id="stopCanvas">
       </div>
        
   

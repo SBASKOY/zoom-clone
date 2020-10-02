@@ -46,7 +46,10 @@ io.on('connection', socket => {
     socket.on("stopCanvas",data=>{
       io.to(roomId).emit("stopCanvas",data)
     })
-
+    socket.on("share",data=>{
+     
+      io.to(roomId).emit("share",userId)
+    })
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
     })

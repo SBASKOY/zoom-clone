@@ -11,7 +11,7 @@ const myPeer = new Peer({
    port: "3001" */
 })
 const myVideo = document.createElement('video')
-const videoElem = document.getElementById("shareVide");
+
 
 myVideo.muted = true
 const peers = {}
@@ -45,6 +45,7 @@ socket.on('chat message', function (msg, name) {
   p.innerText = name;
 
   var p2 = document.createElement("p");
+
   p2.innerText = msg;
 
   div.appendChild(p);
@@ -52,13 +53,6 @@ socket.on('chat message', function (msg, name) {
 
   $('#chatpanel').append(div);
 });
-var displayMediaOptions = {
-  video: {
-    cursor: "always"
-  },
-  audio: false
-};
-
 myPeer.on('open', id => {
   $('form').submit(function (e) {
     e.preventDefault();

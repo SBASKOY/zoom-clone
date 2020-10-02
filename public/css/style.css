@@ -64,6 +64,8 @@ form button{
   bottom: 0;
   height: 60px;
   left: 20%;
+  display: flex;
+  flex-direction: row;
 }
 
 .video-grid{

@@ -2,8 +2,10 @@ const express = require('express')
 const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
-const { v4: uuidV4 } = require('uuid')
-const path = require("path");
+const { v4: uuidV4 } = require('uuid');
+const screenshot = require('screenshot-desktop')
+
+
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
@@ -30,7 +32,7 @@ app.get('/:room', (req, res) => {
     res.redirect("/");
   }
 })
-
+var timer;
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
@@ -49,6 +51,19 @@ io.on('connection', socket => {
     socket.on("share",data=>{
      
       io.to(roomId).emit("share",userId)
+    });
+    socket.on("start",data=>{
+      timer=setInterval(()=>{
+        screenshot({format: 'png'}).then((img) => {
+          io.to(roomId).emit("image",img.toString("base64"))
+        }).catch((err) => {
+          // ...
+        })
+      },1000/60)
+    })
+    socket.on("stop",()=>{
+      console.log("dstopp")
+      clearInterval(timer);
     })
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)

@@ -3,7 +3,6 @@ const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const { v4: uuidV4 } = require('uuid');
-const screenshot = require('screenshot-desktop')
 
 
 app.set('view engine', 'ejs')
@@ -48,23 +47,12 @@ io.on('connection', socket => {
     socket.on("stopCanvas",data=>{
       io.to(roomId).emit("stopCanvas",data)
     })
-    socket.on("share",data=>{
-     
+ 
+    socket.on("share",_=>{
       io.to(roomId).emit("share",userId)
     });
-    socket.on("start",data=>{
-      timer=setInterval(()=>{
-        screenshot({format: 'png'}).then((img) => {
-          io.to(roomId).emit("image",img.toString("base64"))
-        }).catch((err) => {
-          // ...
-        })
-      },1000/60)
-    })
-    socket.on("stop",()=>{
-      console.log("dstopp")
-      clearInterval(timer);
-    })
+
+
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
     })

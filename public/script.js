@@ -13,7 +13,7 @@ const myPeer = new Peer({
 const myVideo = document.createElement('video')
 
 
-myVideo.muted = true
+/* myVideo.muted = true
 const peers = {}
 navigator.mediaDevices.getUserMedia({
   video: true,
@@ -25,15 +25,13 @@ navigator.mediaDevices.getUserMedia({
     call.answer(stream)
     const video = document.createElement('video')
     call.on('stream', userVideoStream => {
-      console.log("call On");
       addVideoStream(video, userVideoStream)
     })
   })
   socket.on('user-connected', userId => {
-    console.log("connect");
     connectToNewUser(userId, stream)
   });
-})
+}) */
 
 socket.on('user-disconnected', userId => {
   if (peers[userId]) peers[userId].close()
@@ -67,11 +65,9 @@ myPeer.on('open', id => {
 
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
-  console.log("mypeercall");
   const video = document.createElement('video')
  
   call.on('stream', userVideoStream => {
-    console.log("call ONNNNN")
     addVideoStream(video, userVideoStream)
   })
   call.on('close', () => {
@@ -81,7 +77,6 @@ function connectToNewUser(userId, stream) {
 }
 
 function addVideoStream(video, stream) {
-  console.log("add video ");
   video.srcObject = stream
   video.addEventListener('loadedmetadata', () => {
     video.play()
@@ -102,6 +97,8 @@ document.getElementById("shareCanvas").addEventListener("click", () => {
   var v = document.getElementsByTagName("video");
   for (var i = 0; i < v.length; i++) {
     v[i].classList.add("video-active");
+    v[i].style.width="100px";
+    v[i].style.height="100px";
   }
   document.getElementById("shareCanvas").style.display="none";
   document.getElementById("stopCanvas").style.display="block";

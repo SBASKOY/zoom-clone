@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,23 +16,26 @@
   <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
   <script src="/socket.io/socket.io.js" defer></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="script.js" defer></script>
+  <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
+  <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+   <script src="script.js" defer></script>
   <script src="sharescreen.js" defer></script>
   <title>Chat Room</title>
   <style>
-    
+
   </style>
 </head>
+
 <body>
   <div class="container">
-  
+
     <div class="chat">
       <div>
         <h3 style="margin-left: 10px;">Oda ID</h3>
         <p id="roomId" style="margin-left: 10px;"></p>
       </div>
       <div id="chatpanel" style="overflow-y: auto;height: 75%">
-      
+
       </div>
 
       <form action="">
@@ -39,35 +43,39 @@
         <button>Gönder</button>
       </form>
     </div>
-   
-      <div id="video-grid" class="video-grid">
-        <canvas id="canvas" style="display: none;"></canvas>
-        <div style="display:none;" id="toolbar">
-            <button id="yellow" style="background-color: yellow;"></button>
-            <button id="red" style="background-color: red;"></button>
-            <button id="blue" style="background-color: blue;"></button>
-            <button id="green" style="background-color: green;"></button>
-            <button id="brown" style="background-color:brown;"></button>
-            <button id="purple" style="background-color: purple;"></button>
-        </div>
-        <img  id="image" ></video>
-       
-        <div id="video-grid1" class="video-grid1">
 
-        </div>
+    <div id="video-grid" class="video-grid">
+      <canvas id="canvas" style="display: none;"></canvas>
+      <div style="display:none;" id="toolbar">
+        <button id="yellow" style="background-color: yellow;"></button>
+        <button id="red" style="background-color: red;"></button>
+        <button id="blue" style="background-color: blue;"></button>
+        <button id="green" style="background-color: green;"></button>
+        <button id="brown" style="background-color:brown;"></button>
+        <button id="purple" style="background-color: purple;"></button>
       </div>
-      <div class="setting">
-        <img src="images/drawing.svg"  width="50" height="50" id="shareCanvas">
-        <img src="images/stop.svg" width="50" style="display: none;" height="50" id="stopCanvas">
-        <img src="images/share.svg"  width="50" height="50" id="startShare">
-        <img src="images/stop.svg" width="50" style="display: none;" height="50" id="stopShare">
+      <div id="firstElem">
+
       </div>
-       
-  
+
+
+      <div id="video-grid1" class="video-grid1">
+
+      </div>
+    </div>
+    <div class="setting">
+      <img src="images/drawing.svg" width="50" height="50" id="shareCanvas">
+      <img src="images/stop.svg" width="50" style="display: none;" height="50" id="stopCanvas">
+      <img src="images/share.svg" width="50" height="50" id="startShare">
+      <img src="images/stop.svg" width="50" style="display: none;" height="50" id="stopShare">
+    </div>
+
+
   </div>
   <script>
-     document.getElementById("roomId").innerText=ROOM_ID;
+    document.getElementById("roomId").innerText = ROOM_ID;
   </script>
-  
+
 </body>
+
 </html>

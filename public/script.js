@@ -44,8 +44,8 @@ socket.on('chat message', function (msg, name) {
   p.innerText = name;
 
   var p2 = document.createElement("p");
-
-  p2.innerText = msg;
+  var message=urlify(msg);
+  p2.innerHTML =message;
 
   div.appendChild(p);
   div.appendChild(p2);
@@ -62,6 +62,14 @@ myPeer.on('open', id => {
 
   socket.emit('join-room', ROOM_ID, id)
 })
+function urlify(text) {
+  var urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function(url) {
+    return '<a target="_blank"  href="' + url + '">' + url + '</a>';
+  })
+  // or alternatively
+  // return text.replace(urlRegex, '<a href="$1">$1</a>')
+}
 
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)

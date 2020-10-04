@@ -13,8 +13,9 @@ const myPeer = new Peer({
 const myVideo = document.createElement('video')
 
 
-/* myVideo.muted = true
+myVideo.muted = true
 const peers = {}
+/*
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
@@ -44,8 +45,8 @@ socket.on('chat message', function (msg, name) {
   p.innerText = name;
 
   var p2 = document.createElement("p");
-  var message=urlify(msg);
-  p2.innerHTML =message;
+  var message = urlify(msg);
+  p2.innerHTML = message;
 
   div.appendChild(p);
   div.appendChild(p2);
@@ -64,7 +65,7 @@ myPeer.on('open', id => {
 })
 function urlify(text) {
   var urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, function(url) {
+  return text.replace(urlRegex, function (url) {
     return '<a target="_blank"  href="' + url + '">' + url + '</a>';
   })
   // or alternatively
@@ -74,7 +75,7 @@ function urlify(text) {
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
- 
+
   call.on('stream', userVideoStream => {
     addVideoStream(video, userVideoStream)
   })
@@ -96,79 +97,108 @@ function addVideoStream(video, stream) {
 //SHARE CANVAS
 var canvas;
 var ctx;
-var isMouseDown=false;
+var last_mousex = last_mousey = 0;
+var mousex = mousey = 0;
+var mousedown = false;
+var tooltype = 'draw';
 document.getElementById("shareCanvas").addEventListener("click", () => {
   document.getElementById("video-grid").classList.add("video-grid-active");
   document.getElementById("video-grid1").classList.add("video-grid1-active");
   document.getElementById("toolbar").classList.add("toolbar");
-  document.getElementById("toolbar").style.display="block";
+  document.getElementById("toolbar").style.display = "block";
   var v = document.getElementsByTagName("video");
   for (var i = 0; i < v.length; i++) {
     v[i].classList.add("video-active");
-    v[i].style.width="100px";
-    v[i].style.height="100px";
+    v[i].style.width = "100px";
+    v[i].style.height = "100px";
   }
-  document.getElementById("shareCanvas").style.display="none";
-  document.getElementById("stopCanvas").style.display="block";
+  document.getElementById("shareCanvas").style.display = "none";
+  document.getElementById("stopCanvas").style.display = "block";
   canvas = document.getElementById("canvas");
   canvas.classList.add("canvas");
   canvas.style.display = "block";
-  canvas.addEventListener("mousedown",startPainting,false)
-  canvas.addEventListener("mousemove",sketch,false)
-  canvas.addEventListener("mouseup",stopPainting,false)
+  canvas.style.cursor = "crosshair";
+  /*   canvas.addEventListener("mousedown", startPainting)
+    canvas.addEventListener("mousemove", sketch)
+    canvas.addEventListener("mouseup", stopPainting) */
   ctx = canvas.getContext("2d");
+
+   last_mousex = last_mousey = 0;
+   mousex = mousey = 0;
+   mousedown = false;
+   tooltype = 'draw';
+   canvas.addEventListener("mousedown",mouseDown)
+   canvas.addEventListener("mouseup",()=>mousedown = false)
+  canvas.addEventListener("mousemove",mouseMove)
+
+ 
 });
-let coord = {x:0 , y:0};  
-let paint = false; 
-let color="green";
-let lineWidth=1;
-function getPosition(evt){ 
-  var rect = canvas.getBoundingClientRect();
-
- let x= (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
-  let y= (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
-  coord.x=x;
-  coord.y=y;
-} 
-
-function startPainting(event){ 
-  getPosition(event); 
-  paint = true; 
-} 
-function stopPainting(){ 
-  paint = false; 
-} 
-    
-function sketch(event){ 
-  if (paint) {
-    ctx.beginPath(); 
-    
-    ctx.lineWidth = lineWidth; 
-    ctx.lineCap = 'round'; 
-    ctx.strokeStyle = color; 
-    ctx.moveTo(coord.x, coord.y); 
-    getPosition(event); 
-    ctx.lineTo(coord.x , coord.y);   
-    ctx.stroke(); 
-    ctx.closePath();
-   socket.emit("draw",{
-     cord:{
-       x:coord.x,
-       y:coord.y
-     },
-     color:color,
-     lineWidth:lineWidth
-   });
-  }; 
+let coord = { x: 0, y: 0 };
+let paint = false;
+let color = "green";
+let lineWidth = 1;
+use_tool = function (tool) {
+  tooltype = tool; 
 }
-var lastx;
-var lasty;
-socket.on("draw",data=>{
+function mouseMove(event){
+  getPosition(event);
+    mousex =coord.x
+    mousey = coord.y;
+
+    if (mousedown) {
+      ctx.beginPath();
+
+      ctx.lineWidth = lineWidth;
+      ctx.lineJoin = ctx.lineCap = 'round';
+      ctx.strokeStyle = color;
+      ctx.moveTo(last_mousex, last_mousey);
+     
+      ctx.lineTo(mousex, mousey);
+      ctx.closePath();
+      ctx.stroke();
+
+      socket.emit("draw", {
+        cord: {
+          x: coord.x,
+          y: coord.y
+        },
+        last_cord:{
+          x:last_mousex,
+          y:last_mousey
+        },
+        color: color,
+        lineWidth: lineWidth
+      });
+    }
+    last_mousex = mousex;
+    last_mousey = mousey;
+}
+function mouseDown(event){
+  getPosition(event);
+  last_mousex = mousex = coord.x
+  last_mousey = mousey =coord.y;
+  mousedown = true;
+}
+
+function getPosition(evt) {
+  var rect = canvas.getBoundingClientRect();
+  let x = (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
+  let y = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
+  coord.x = x;
+  coord.y = y;
+}
+
+var isCanvas = false;
+socket.on("draw", data => {
+  console.log("canvas")
+  isCanvas = true;
   document.getElementById("video-grid").classList.add("video-grid-active");
   document.getElementById("video-grid1").classList.add("video-grid1-active");
   var v = document.getElementsByTagName("video");
   for (var i = 0; i < v.length; i++) {
     v[i].classList.add("video-active");
+    v[i].style.width = "100px";
+    v[i].style.height = "100px";
   }
   canvas = document.getElementById("canvas");
   canvas.classList.add("canvas");
@@ -176,25 +206,26 @@ socket.on("draw",data=>{
 
   ctx = canvas.getContext("2d");
   ctx.beginPath();
-  ctx.lineCap = 'round'; 
-  ctx.lineWidth=data.lineWidth;
-  ctx.strokeStyle=data.color
-  ctx.moveTo(lastx,lasty);
-  ctx.lineTo(data.cord.x ,data.cord.y); 
-  lastx=data.cord.x;
-  lasty=data.cord.y; 
+  ctx.lineCap = 'round';
+  ctx.lineWidth = data.lineWidth;
+  ctx.strokeStyle = data.color
+  ctx.moveTo(data.last_cord.x, data.last_cord.y);
+  ctx.lineTo(data.cord.x, data.cord.y);
   ctx.stroke();
 })
-function stopCanvasShare(){
+function stopCanvasShare() {
+  isCanvas = false;
   document.getElementById("video-grid").classList.remove("video-grid-active");
   document.getElementById("toolbar").classList.remove("toolbar");
-  document.getElementById("toolbar").style.display="none";
+  document.getElementById("toolbar").style.display = "none";
   var v = document.getElementsByTagName("video");
   for (var i = 0; i < v.length; i++) {
     v[i].classList.remove("video-active");
+    v[i].style.width = "300px";
+    v[i].style.height = "300px";
   }
-  document.getElementById("shareCanvas").style.display="block";
-  document.getElementById("stopCanvas").style.display="none";
+  document.getElementById("shareCanvas").style.display = "block";
+  document.getElementById("stopCanvas").style.display = "none";
   canvas = document.getElementById("canvas");
   canvas.classList.remove("canvas");
   canvas.style.display = "none";
@@ -202,13 +233,13 @@ function stopCanvasShare(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 document.getElementById("stopCanvas").addEventListener("click", () => {
-  coord = {x:0 , y:0};
+  coord = { x: 0, y: 0 };
   stopCanvasShare();
-  socket.emit("stopCanvas","stop")
+  socket.emit("stopCanvas", "stop")
 });
-socket.on("stopCanvas",data=>{
+socket.on("stopCanvas", data => {
   stopCanvasShare();
 })
-$("button").click(function() {
-  color=this.id;
+$("button").click(function () {
+  color = this.id;
 });

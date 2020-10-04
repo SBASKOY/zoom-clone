@@ -86,7 +86,7 @@ connection.onstream = function (event) {
     }
     video.id = event.streamid;
     video.srcObject = event.stream;
-    if (fullScreen) {
+    if (fullScreen || isCanvas) {
         video.classList.add("video-active")
     } else {
         video.classList.add("video")
@@ -103,6 +103,7 @@ connection.onstreamended = function (event) {
 }
 $(document).ready(() => {
     $(document).on('click', "video ", function () {
+        if(isCanvas)return;
         fullScreen = true;
         document.getElementById("reset").style.display="block"
         var v = document.getElementsByTagName("video");
@@ -123,6 +124,7 @@ $(document).ready(() => {
     });
 })
 document.getElementById("reset").addEventListener("click",()=>{
+    if(isCanvas)return;
     document.getElementById("reset").style.display="none"
     fullScreen=false;
     var v = document.getElementsByTagName("video");

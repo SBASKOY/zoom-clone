@@ -42,10 +42,11 @@ io.on('connection', socket => {
     });
 
     socket.on("draw",data=>{
-      io.to(roomId).emit("draw",data)
+      socket.broadcast.to(roomId).emit('draw', data);
+      //io.to(roomId).emit("draw",data)
     })
     socket.on("stopCanvas",data=>{
-      io.to(roomId).emit("stopCanvas",data)
+      socket.broadcast.to(roomId).emit("stopCanvas",data)
     })
  
     socket.on("share",_=>{

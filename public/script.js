@@ -147,7 +147,14 @@ function mouseMove(event){
 
     if (mousedown) {
       ctx.beginPath();
-
+      if(tooltype=='draw') {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+    } else {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.lineWidth = 10;
+    }
       ctx.lineWidth = lineWidth;
       ctx.lineJoin = ctx.lineCap = 'round';
       ctx.strokeStyle = color;

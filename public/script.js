@@ -1,5 +1,6 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid1')
+
 const colors = [
   "green", "red", "grey", "aqua", "yellow"
 ]
@@ -68,8 +69,7 @@ function urlify(text) {
   return text.replace(urlRegex, function (url) {
     return '<a target="_blank"  href="' + url + '">' + url + '</a>';
   })
-  // or alternatively
-  // return text.replace(urlRegex, '<a href="$1">$1</a>')
+
 }
 
 function connectToNewUser(userId, stream) {
@@ -250,3 +250,24 @@ socket.on("stopCanvas", data => {
 $("button").click(function () {
   color = this.id;
 });
+
+$("#startChat").click(()=>{
+
+  NAME=$("#getName").val();
+  if(!NAME){
+    alert("Lütfen isin giriniz");
+  }else{
+    $(".start-chat").hide();
+    $("#chatDiv").show();
+  }
+})
+$("#copyLink").click(()=>{
+  var dummy = document.createElement('input'),
+  text = window.location.href;
+
+document.body.appendChild(dummy);
+dummy.value = text;
+dummy.select();
+document.execCommand('copy');
+document.body.removeChild(dummy);
+})

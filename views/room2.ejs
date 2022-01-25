@@ -1,0 +1,75 @@
+<html lang="tr-TR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
+    <!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style2.css">
+
+    <script>
+        const ROOM_ID = "<%= roomId %>";
+        var NAME=""
+      </script>
+       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+      <script src="/socket.io/socket.io.js" defer></script>
+     
+      <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
+      <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+      <script src="js/main.js" defer></script>
+      <script src="/js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="chat-panel">
+            <div class="container-fluid">
+    <input value="Linki Kopyala" id="copyLink" type="button" class="btn btn-success">
+
+                <div class="chat-panel-start-chat">
+                    <input type="text" id="getName" placeholder="Adınız" autocomplete="off">
+                    <input type="button" id="startChat" class="btn"  value="Sohbet Başlat">
+                </div>
+                <div class="chat">
+                    <div id="chatpanel" class="chat-message-panel">
+
+                    </div>
+                    
+              
+                    <form action="" class="chat-send-form">
+                      <input placeholder="Mesaj yolla" id="m" autocomplete="off" />
+                      <button class="btn">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="main-panel" >
+            <div class="main-panel-header">
+                <button id="toggleMenu">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+             
+                </button>
+                <img src="images/drawing.svg" width="30" height="30" id="shareCanvas">
+                <img src="images/stop.svg" width="30" style="display: none;" height="30" id="stopCanvas">
+                <img src="images/share.svg" width="30" height="30" id="startShare">
+                <img src="images/stop.svg" width="30" style="display: none;" height="30" id="stopShare">
+                <img src="images/restore.svg" width="30" height="30" style="display: none;" id="reset">
+            </div>
+            <div class="main-panel-video" id="video-grid" >
+              
+      
+            </div>
+        </div>
+      
+
+
+    </div>
+</body>
+
+</html>

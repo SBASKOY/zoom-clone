@@ -3,31 +3,51 @@ const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const { v4: uuidV4 } = require('uuid');
-
+const fs=require("fs");
+const path = require("path");
+const bodyParser = require('body-parser');
+var filesSystem = './filesSystem/';
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
+app.use(bodyParser.json());
 app.use('/peerjs', require('peer').ExpressPeerServer(server, {
   debug: true
 }))
 
+var allfiles=[]
 app.get('/', (req, res) => {
+
+  fs.readdirSync(filesSystem).forEach(file => {
+  
+    allfiles.push(file)
+  });
+  
   res.render("index")
+})
+// ! DİKKAT
+app.post("/folder",(req,res)=>{
+  console.log(filesSystem+req.body.path)
+   var files=[]
+  fs.readdirSync(filesSystem+req.body.path).forEach(file => {
+    files.push(file)
+  });
+  
+  res.send({folder:files})
 })
 
 app.get("/room/:name", (req, res) => {
-  res.redirect(`/${uuidV4()}_${req.params.name}`)
+  res.redirect(`/${uuidV4()}`)
 })
 app.get('/:room', (req, res) => {
   try{
-    var query=req.params.room.split("_");
-    if(query[1]==""||query==null){
-      res.redirect("/");
-    }else{
-      res.render('room', { roomId:query[0],name:query[1]})
-    }
+
+     // res.render('room', { roomId:req.params.room})
+      res.render('room2',{ roomId:req.params.room})
+    
   }catch(e){
+    console.log(e)
     res.redirect("/");
   }
 })
@@ -37,8 +57,8 @@ io.on('connection', socket => {
     socket.join(roomId)
     socket.to(roomId).broadcast.emit('user-connected', userId)
 
-    socket.on('chat message', (msg,name) => {
-      io.to(roomId).emit("chat message", msg,name);
+    socket.on('chat message', (msg,name,color) => {
+      io.to(roomId).emit("chat message", msg,name,color);
     });
 
     socket.on("draw",data=>{

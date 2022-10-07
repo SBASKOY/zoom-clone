@@ -12,7 +12,7 @@
 
 - You can share your screen with your frinds.
 
-- You can write messega your friends
+- You can write message your friends
 
 > enjoy the chat
 
